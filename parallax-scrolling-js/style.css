@@ -1,0 +1,36 @@
+body {
+  height: 300vh;
+  background-color: #00110c;
+}
+header {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  background-color: #04120c;
+  color: #b8e1ee;
+  justify-content: space-between;
+}
+.button-in-header {
+  padding: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  height: 34px;
+  box-sizing: border-box;
+}
+.button-in-header:hover {
+  background-color: #127374;
+}
+
+#right-nav {
+  display: flex;
+}
+#right-nav .active {
+  background-color: #013a3b;
+}
+
+#image-wrapper {
+  overflow: hidden;
+}
+
+#main-image {
+}
