@@ -78,6 +78,23 @@ a {
   background-color: #127374;
 }
 
+.long-text {
+  display: none;
+}
+
+.short-text {
+  display: inline;
+}
+
+@media (min-width: 880px) {
+  .long-text {
+    display: inline;
+  }
+  .short-text {
+    display: none;
+  }
+}
+
 #right-buttons {
   display: flex;
 }
@@ -118,10 +135,6 @@ a {
   gap: 50px;
 }
 
-.short-text {
-  display: none;
-}
-
 .mountain-content-wrapper {
   display: flex;
   flex-direction: column;
@@ -137,3 +150,4 @@ a {
   background-color: #B8E1EE;
   color: #04120C;
 }
+

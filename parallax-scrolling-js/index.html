@@ -13,8 +13,12 @@
       <a href="#document-title" class="button-in-header">THE MOUNTAIN</a>
       <div id="right-buttons">
         <a id="active-menu" class="button-in-header">MOUNTAIN</a>
-        <a class="button-in-header"> AMAZING BLOG </a>
-        <a class="button-in-header"> AMAZING NEWS </a>
+        <a class="button-in-header">
+          <span class="long-text">AMAZING BLOG</span><span class="short-text">BLOG</span></a
+        >
+        <a class="button-in-header">
+          <span class="long-text">AMAZING NEWS</span><span class="short-text">NEWS</span></a
+        >
       </div>
     </header>
     <div id="image-wrapper">
@@ -1705,29 +1709,31 @@
     const mountain6 = document.getElementById("mountain6")
     const mountain7 = document.getElementById("mountain7")
 
-    let clientWidth
+    let clientWidth = document.documentElement.clientWidth
 
     // parallax scroll code
     window.addEventListener("scroll", () => {
-      const scrollY = window.scrollY
+      if (clientWidth > 800) {
+        const scrollY = window.scrollY
 
-      sun.style.transform = `translateY(${scrollY * 1.05}px)`
+        sun.style.transform = `translateY(${scrollY * 1.05}px)`
 
-      grayClouds.style.transform = `translateX(${scrollY * 0.125}px)`
-      whiteClouds.style.transform = `translateX(${scrollY * -0.125}px)`
+        grayClouds.style.transform = `translateX(${scrollY * 0.125}px)`
+        whiteClouds.style.transform = `translateX(${scrollY * -0.125}px)`
 
-      bird1.style.transform = `translateX(${scrollY}px)`
-      bird2.style.transform = `translateX(-${scrollY * 3.5}px)`
-      bird3.style.transform = `translateX(-${scrollY * 0.5}px)`
+        bird1.style.transform = `translateX(${scrollY}px)`
+        bird2.style.transform = `translateX(-${scrollY * 3.5}px)`
+        bird3.style.transform = `translateX(-${scrollY * 0.5}px)`
 
-      mountain0.style.transform = `translateY(${scrollY * 0.95}px)`
-      mountain1.style.transform = `translateY(${scrollY * 0.93}px)`
-      mountain2.style.transform = `translateY(${scrollY * 0.9}px)`
-      mountain3.style.transform = `translateY(${scrollY * 0.8}px)`
-      mountain4.style.transform = `translateY(${scrollY * 0.7}px)`
-      mountain5.style.transform = `translateY(${scrollY * 0.6}px)`
-      mountain6.style.transform = `translateY(${scrollY * 0.3}px)`
-      mountain7.style.transform = `translateY(${scrollY * 0.1}px)`
+        mountain0.style.transform = `translateY(${scrollY * 0.95}px)`
+        mountain1.style.transform = `translateY(${scrollY * 0.93}px)`
+        mountain2.style.transform = `translateY(${scrollY * 0.9}px)`
+        mountain3.style.transform = `translateY(${scrollY * 0.8}px)`
+        mountain4.style.transform = `translateY(${scrollY * 0.7}px)`
+        mountain5.style.transform = `translateY(${scrollY * 0.6}px)`
+        mountain6.style.transform = `translateY(${scrollY * 0.3}px)`
+        mountain7.style.transform = `translateY(${scrollY * 0.1}px)`
+      }
     })
 
     document.querySelectorAll("#right-buttons .button-in-header").forEach((element) => {
@@ -1748,6 +1754,28 @@
       })
     })
 
-    window.addEventListener("resize", () => {})
+    window.addEventListener("resize", () => {
+      clientWidth = document.documentElement.clientWidth
+
+      if (clientWidth < 800) {
+        sun.style.transform = `translateY(0px)`
+
+        grayClouds.style.transform = `translateX(0px)`
+        whiteClouds.style.transform = `translateX(0px)`
+
+        bird1.style.transform = `translateX(0px)`
+        bird2.style.transform = `translateX(0px)`
+        bird3.style.transform = `translateX(0px)`
+
+        mountain0.style.transform = `translateY(0px)`
+        mountain1.style.transform = `translateY(0px)`
+        mountain2.style.transform = `translateY(0px)`
+        mountain3.style.transform = `translateY(0px)`
+        mountain4.style.transform = `translateY(0px)`
+        mountain5.style.transform = `translateY(0px)`
+        mountain6.style.transform = `translateY(0px)`
+        mountain7.style.transform = `translateY(0px)`
+      }
+    })
   </script>
 </html>
