@@ -62,9 +62,15 @@
       <li class="list-item">Hello</li>
     </ul>
 
+    <main>
+      <aside class="panel-1-img">
+        <img id="flying-santa-img" src="./assets/santa_flying.png" alt="snata flying" />
+      </aside>
+    </main>
+
     <script>
       // TODO: requestAnimationFrame, IntersectionObserver로 리팩토링 해보기
-      
+
       const listStyleChangeStartY = 290
       const listStyleChangeEndY = 1739
 
@@ -75,11 +81,12 @@
       window.addEventListener("scroll", () => {
         console.log(window.scrollY)
 
-        if (document.getElementById("on")) {
-          document.getElementById("on").removeAttribute("id")
-        }
-
+        // text scroll animation
         if (window.scrollY > listStyleChangeStartY && window.scrollY < listStyleChangeEndY) {
+          if (document.getElementById("on")) {
+            document.getElementById("on").removeAttribute("id")
+          }
+
           const target = Math.floor((window.scrollY - listStyleChangeStartY) / division)
 
           listItems[target].id = "on"
