@@ -66,6 +66,16 @@
       <aside id="panel-1-img">
         <img id="flying-santa-img" src="./assets/santa_flying.png" alt="snata flying" />
       </aside>
+
+      <section id="video-section">
+        <div id="fixed-wrapper">
+          <video id="video" src="./assets/sample-5s.mp4" type="video/mp4" muted loop></video>
+          <div id="fixed-description">
+            <div>Hello</div>
+            <div>World</div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script>
@@ -79,8 +89,51 @@
       const panel1Img = document.getElementById("panel-1-img")
       const flyingSantaImg = document.getElementById("flying-santa-img")
 
+      const videoPlayBack = 500
+
+      const videoElement = document.getElementById("video")
+      const videoSection = document.getElementById("video-section")
+      const fixedWrapper = document.getElementById("fixed-wrapper")
+
+      const fixedDescription = document.getElementById("fixed-description")
+      const fixedDescriptionAppearStartTiming = 3050
+      const fixedDescriptionAppearEndTiming = 3350
+
+      // 스크롤 시 화면 중앙에 배치하기 위한 함수
+      function centerElement(elementId, video) {
+        const element = document.getElementById(elementId)
+        const parent = element.parentElement
+
+        if (
+          window.scrollY >
+          parent.offsetTop - (document.documentElement.clientHeight - element.offsetHeight) / 2
+        ) {
+          console.log("run")
+          element.style.position = "fixed"
+          element.style.top = "50%"
+          element.style.left = "50%"
+          element.style.transform = "translate(-50%, -50%)"
+
+          if (video) {
+            video.currentTime = (window.scrollY - videoSection.offsetTop) / videoPlayBack
+          }
+        } else {
+          element.style.position = "relative"
+          element.style.top = "initial"
+          element.style.left = "initial"
+          element.style.transform = "initial"
+        }
+      }
+
+      // 영상 다운로드가 완료되면..!
+      videoElement.addEventListener("loadeddata", () => {
+        console.log("loadeddata")
+        // 스크롤 시 비디오가 얼마나 진행될 지
+        videoSection.style.height = videoElement.duration * videoPlayBack + "px"
+      })
+
       window.addEventListener("scroll", () => {
-        // console.log("scollY: ", window.scrollY)
+        console.log("scollY: ", window.scrollY)
 
         // text scroll animation
         if (window.scrollY > listStyleChangeStartY && window.scrollY < listStyleChangeEndY) {
@@ -100,7 +153,7 @@
           scrollYBottom > panel1Img.offsetTop &&
           scrollYBottom < panel1Img.offsetTop + panel1Img.offsetHeight
         ) {
-          // 트랜지션 값 + 
+          // 트랜지션 값 +
           // (트랜지션 값 * 변화율 * (브라우저 하단 값 - 브라우저 상단에서 떨어진 거리) / 이미지의 높이값)
           const translateX =
             80 - (80 * 1.3 * (scrollYBottom - panel1Img.offsetTop)) / panel1Img.offsetHeight
@@ -112,6 +165,57 @@
             23 - (23 * 1.6 * (scrollYBottom - panel1Img.offsetTop)) / panel1Img.offsetHeight
 
           flyingSantaImg.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotationDegree}deg)`
+        }
+
+        centerElement("fixed-wrapper", videoElement)
+
+        // 스크롤의 위치가 video section의 크기보다 큰 경우
+        // 영상이 다 재생된 것과 동일
+        // 애니메이션 종료
+        if (
+          window.scrollY >
+          videoSection.offsetTop +
+            (videoSection.offsetHeight -
+              (fixedWrapper.offsetHeight +
+                (document.documentElement.clientHeight - fixedWrapper.offsetHeight) / 2))
+        ) {
+          fixedWrapper.style.position = "relative"
+          fixedWrapper.style.top = "initial"
+          fixedWrapper.style.left = "initial"
+          fixedWrapper.style.transform = `translateY(${
+            videoSection.offsetHeight - fixedWrapper.offsetHeight
+          }px)`
+
+          console.log(
+            "total :: ",
+            videoSection.offsetTop +
+              videoSection.offsetHeight -
+              (fixedWrapper.offsetHeight +
+                (document.documentElement.clientHeight - fixedWrapper.offsetHeight) / 2)
+          )
+
+          console.log("videoSection offsetTop : ", videoSection.offsetTop)
+          console.log("videoSection.offsetHeight : ", videoSection.offsetHeight)
+          console.log("fixedWrapper offsetHeight : ", fixedWrapper.offsetHeight)
+          console.log("document clientHeight: ", document.documentElement.clientHeight)
+        }
+
+        if (
+          window.scrollY > fixedDescriptionAppearStartTiming &&
+          window.scrollY < fixedDescriptionAppearEndTiming
+        ) {
+          fixedDescription.style.transform = `translateY(${
+            fixedDescriptionAppearEndTiming - window.scrollY
+          }px)`
+
+          fixedDescription.style.opacity =
+            (window.scrollY - fixedDescriptionAppearStartTiming) / 300
+        } else if (window.scrollY > fixedDescriptionAppearEndTiming) {
+          fixedDescription.style.transform = `translateY(0px)`
+          fixedDescription.style.opacity = 1
+        } else {
+          fixedDescription.style.transform = `translateY(150px)`
+          fixedDescription.style.opacity = 0
         }
       })
     </script>
