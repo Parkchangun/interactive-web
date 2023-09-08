@@ -82,6 +82,7 @@
           <img width="315" src="./assets/05-text.png" alt="text-img" />
         </div>
       </section>
+
       <section id="white-wrapper">
         <div id="slider-container">
           <div id="slider-content-wrapper">
@@ -250,9 +251,9 @@
       const handleSliddeChange = (step) => {
         currentImage += step
 
-        if(currentImage < 0) {
+        if (currentImage < 0) {
           currentImage = sliderImages.length - 1
-        } else if(currentImage >= sliderImages.length) {
+        } else if (currentImage >= sliderImages.length) {
           currentImage = 0
         }
 

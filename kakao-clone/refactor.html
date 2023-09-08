@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./reset.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <title>Chan Bank</title>
+  </head>
+  <body>
+    <div id="main-img-wrapper" style="margin-top: 300px">
+      <img
+        width="320"
+        src="./assets/Lovepik_com-401339128-data-management-data-analysis-icon-free-vector-illustration-mate.png"
+        alt="coding img"
+      />
+    </div>
+
+    <div id="intro-main">
+      <p>안녕하세요, 박찬건입니다.</p>
+      <p>클론 코딩 중..</p>
+      <p id="join-us-text">Join us!</p>
+      <img id="down-arrow-icon" src="./assets/down-arrow.png" alt="down arrow" />
+    </div>
+
+    <ul id="list-item-wrapper">
+      <li class="list-item">띠리로리리링</li>
+      <li class="list-item">박찬건</li>
+      <li class="list-item">클론코딩</li>
+      <li class="list-item">CSS3</li>
+      <li class="list-item">Nesting</li>
+      <li class="list-item">Hello</li>
+      <li class="list-item">띠리로리리링</li>
+      <li class="list-item">박찬건</li>
+      <li class="list-item">클론코딩</li>
+      <li class="list-item">CSS3</li>
+      <li class="list-item">Nesting</li>
+      <li class="list-item">Hello</li>
+      <li class="list-item">띠리로리리링</li>
+      <li class="list-item">박찬건</li>
+      <li class="list-item">클론코딩</li>
+      <li class="list-item">CSS3</li>
+      <li class="list-item">Nesting</li>
+      <li class="list-item">Hello</li>
+      <li class="list-item">띠리로리리링</li>
+      <li class="list-item">박찬건</li>
+      <li class="list-item">클론코딩</li>
+      <li class="list-item">CSS3</li>
+      <li class="list-item">Nesting</li>
+      <li class="list-item">Hello</li>
+      <li class="list-item">띠리로리리링</li>
+      <li class="list-item">박찬건</li>
+      <li class="list-item">클론코딩</li>
+      <li class="list-item">CSS3</li>
+      <li class="list-item">Nesting</li>
+      <li class="list-item">Hello</li>
+      <li class="list-item">띠리로리리링</li>
+      <li class="list-item">박찬건</li>
+      <li class="list-item">클론코딩</li>
+      <li class="list-item">CSS3</li>
+      <li class="list-item">Nesting</li>
+      <li class="list-item">Hello</li>
+    </ul>
+    <div style="margin-top: 3000px"></div>
+
+    <script>
+      function setupScrollObserver() {
+        // listStyleChangeStartY와 listStyleChangeEndY는 이제 클로저 내부에서만 사용됩니다.
+        let listStyleChangeStartY = 0
+        let listStyleChangeEndY = 0
+
+        const listItems = document.querySelectorAll(".list-item")
+
+        function applyAnimation(scrollY) {
+          const viewportHeight = window.innerHeight
+          const centerY = scrollY + viewportHeight / 2 // 중앙 y 좌표
+          console.log("centerY: ", centerY)
+
+          if (centerY >= listStyleChangeStartY && centerY <= listStyleChangeEndY) {
+            if (document.getElementById("on")) {
+              document.getElementById("on").removeAttribute("id")
+            }
+
+            const division = (listStyleChangeEndY - listStyleChangeStartY) / listItems.length
+            const target = Math.floor((centerY - listStyleChangeStartY) / division)
+            console.log("target: ", target)
+
+            if (target >= 0 && target < listItems.length) {
+              listItems[target].id = "on"
+            }
+          }
+        }
+
+        let lastKnownScrollY = 0
+        let ticking = false
+
+        function onScroll() {
+          lastKnownScrollY = window.scrollY
+
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              applyAnimation(lastKnownScrollY)
+              ticking = false
+            })
+
+            ticking = true
+          }
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const rect = entry.boundingClientRect
+              console.log("rect: ", rect)
+              listStyleChangeStartY = window.scrollY + rect.top
+              console.log("listStyleChangeStartY: ", listStyleChangeStartY)
+              listStyleChangeEndY = window.scrollY + rect.bottom
+              window.addEventListener("scroll", onScroll)
+            } else {
+              window.removeEventListener("scroll", onScroll)
+            }
+          })
+        })
+
+        const listWrapper = document.getElementById("list-item-wrapper")
+        observer.observe(listWrapper)
+      }
+
+      // 클로저를 설정하는 함수 호출
+      setupScrollObserver()
+    </script>
+  </body>
+</html>
