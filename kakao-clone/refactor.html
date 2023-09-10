@@ -64,70 +64,71 @@
     <div style="margin-top: 3000px"></div>
 
     <script>
-      function setupScrollObserver() {
-        // listStyleChangeStartY와 listStyleChangeEndY는 이제 클로저 내부에서만 사용됩니다.
-        let listStyleChangeStartY = 0
-        let listStyleChangeEndY = 0
+      const animations = {
+        listScroll: null
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.target.id === "list-item-wrapper") listScrollAnimation(entry)
+        })
+      })
 
+      function listScrollAnimation(entry) {
+        console.log("list-item-wrapper")
+        const rect = entry.boundingClientRect
+        const top = rect.top + window.scrollY
+        const bottom = rect.bottom + window.scrollY
         const listItems = document.querySelectorAll(".list-item")
-
-        function applyAnimation(scrollY) {
-          const viewportHeight = window.innerHeight
-          const centerY = scrollY + viewportHeight / 2 // 중앙 y 좌표
-          console.log("centerY: ", centerY)
-
-          if (centerY >= listStyleChangeStartY && centerY <= listStyleChangeEndY) {
-            if (document.getElementById("on")) {
-              document.getElementById("on").removeAttribute("id")
-            }
-
-            const division = (listStyleChangeEndY - listStyleChangeStartY) / listItems.length
-            const target = Math.floor((centerY - listStyleChangeStartY) / division)
-            console.log("target: ", target)
-
-            if (target >= 0 && target < listItems.length) {
-              listItems[target].id = "on"
-            }
-          }
+        if(!animations.listScroll) {
+          animations.listScroll = onScroll({ top, bottom }, listItems)
         }
 
-        let lastKnownScrollY = 0
+        if (entry.isIntersecting) {
+          console.log("call")
+          window.addEventListener("scroll", animations.listScroll)
+        } else {
+          console.log("remove")
+          window.removeEventListener("scroll", animations.listScroll)
+        }
+      }
+
+      function onScroll(rect, listItems) {
         let ticking = false
 
-        function onScroll() {
-          lastKnownScrollY = window.scrollY
-
+        return () => {
           if (!ticking) {
             requestAnimationFrame(() => {
-              applyAnimation(lastKnownScrollY)
+              applyAnimation(rect, listItems)
               ticking = false
             })
 
             ticking = true
           }
         }
-
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const rect = entry.boundingClientRect
-              console.log("rect: ", rect)
-              listStyleChangeStartY = window.scrollY + rect.top
-              console.log("listStyleChangeStartY: ", listStyleChangeStartY)
-              listStyleChangeEndY = window.scrollY + rect.bottom
-              window.addEventListener("scroll", onScroll)
-            } else {
-              window.removeEventListener("scroll", onScroll)
-            }
-          })
-        })
-
-        const listWrapper = document.getElementById("list-item-wrapper")
-        observer.observe(listWrapper)
       }
 
-      // 클로저를 설정하는 함수 호출
-      setupScrollObserver()
+      function applyAnimation(rect, listItems) {
+        const viewportHeight = window.innerHeight
+        const centerY = window.scrollY + viewportHeight / 2 // 중앙 y 좌표
+        console.log("centerY: ", centerY, rect.top, rect.bottom)
+
+        if (centerY >= rect.top && centerY <= rect.bottom) {
+          if (document.getElementById("on")) {
+            document.getElementById("on").removeAttribute("id")
+          }
+
+          const division = (rect.bottom - rect.top) / listItems.length
+          const target = Math.floor((centerY - rect.top) / division)
+          console.log("target: ", target)
+
+          if (target >= 0 && target < listItems.length) {
+            listItems[target].id = "on"
+          }
+        }
+      }
+
+      const listWrapper = document.getElementById("list-item-wrapper")
+      observer.observe(listWrapper)
     </script>
   </body>
 </html>
