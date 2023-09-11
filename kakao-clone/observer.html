@@ -79,50 +79,49 @@
         }
       }
 
-      const animationController = {
+      const animationMethods = {
         listScroll: null,
       }
 
       function listScrollAnimation(entries, observer) {
-        console.log("call animation")
-        const rect = entries[0].boundingClientRect
-
-        const listItems = document.querySelectorAll(".list-item")
-
-        const scrollY = window.scrollY
-        const ulElTop = rect.top + scrollY
-        const ulElBottom = rect.bottom + scrollY
-
-        animationController.listScroll =
-          animationController.listScroll ??
-          scrollDebouncer(() => {
-            const viewportHeight = window.innerHeight
-            const centerY = window.scrollY + viewportHeight / 2 // 중앙 y 좌표
-
-            console.log("centerY: ", centerY, ulElTop, ulElBottom)
-
-            if (centerY >= ulElTop && centerY <= ulElBottom) {
-              if (document.getElementById("on")) {
-                document.getElementById("on").removeAttribute("id")
-              }
-
-              const division = (ulElBottom - ulElTop) / listItems.length
-              const target = Math.floor((centerY - ulElTop) / division)
-              console.log("target: ", target)
-
-              if (target >= 0 && target < listItems.length) {
-                listItems[target].id = "on"
-              }
-            }
-          })
-
         if (entries[0].isIntersecting) {
-          console.log("add listener", animationController.listScroll)
-          window.addEventListener("scroll", animationController.listScroll)
+          if (!animationMethods.listScroll) {
+            console.log('add methods')
+            const rect = entries[0].boundingClientRect
+
+            const listItems = document.querySelectorAll(".list-item")
+
+            const scrollY = window.scrollY
+            const ulElTop = rect.top + scrollY
+            const ulElBottom = rect.bottom + scrollY
+
+            animationMethods.listScroll = scrollDebouncer(() => {
+              const viewportHeight = window.innerHeight
+              const centerY = window.scrollY + viewportHeight / 2 // 중앙 y 좌표
+
+              console.log("centerY: ", centerY, ulElTop, ulElBottom)
+
+              if (centerY >= ulElTop && centerY <= ulElBottom) {
+                if (document.getElementById("on")) {
+                  document.getElementById("on").removeAttribute("id")
+                }
+
+                const division = (ulElBottom - ulElTop) / listItems.length
+                const target = Math.floor((centerY - ulElTop) / division)
+                console.log("target: ", target)
+
+                if (target >= 0 && target < listItems.length) {
+                  listItems[target].id = "on"
+                }
+              }
+            })
+          }
+
+          window.addEventListener("scroll", animationMethods.listScroll)
         } else {
           console.log("remove listener")
-          window.removeEventListener("scroll", animationController.listScroll)
-          animationController.listScroll = null
+          window.removeEventListener("scroll", animationMethods.listScroll)
+          animationMethods.listScroll = null
         }
       }
 
