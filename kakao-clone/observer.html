@@ -63,6 +63,12 @@
     </ul>
     <div style="margin-top: 3000px"></div>
 
+    <main>
+      <aside id="panel-1-img">
+        <img id="flying-santa-img" src="./assets/santa_flying.png" alt="snata flying" />
+      </aside>
+    </main>
+
     <script>
       function scrollDebouncer(callback) {
         let ticking = false
@@ -81,12 +87,13 @@
 
       const animationMethods = {
         listScroll: null,
+        imgScroll: null,
       }
 
       function listScrollAnimation(entries, observer) {
         if (entries[0].isIntersecting) {
           if (!animationMethods.listScroll) {
-            console.log('add methods')
+            console.log("add methods")
             const rect = entries[0].boundingClientRect
 
             const listItems = document.querySelectorAll(".list-item")
@@ -121,7 +128,6 @@
         } else {
           console.log("remove listener")
           window.removeEventListener("scroll", animationMethods.listScroll)
-          animationMethods.listScroll = null
         }
       }
 
@@ -134,6 +140,46 @@
       const listWrapper = document.getElementById("list-item-wrapper")
 
       useScrollAnimation({ element: listWrapper, callback: listScrollAnimation })
+
+      function imgPopUpAnimation(entries, observer) {
+        if (entries[0].isIntersecting) {
+          if (!animationMethods.imgScroll) {
+            const flyingSantaImg = document.getElementById("flying-santa-img")
+
+            animationMethods.imgScroll = scrollDebouncer(() => {
+              // 브라우저 하단 값 = 현재 스크롤 위치 + 브라우저 내부 높이
+              const scrollYBottom = window.scrollY + document.documentElement.clientHeight
+
+              if (
+                scrollYBottom > panel1Img.offsetTop &&
+                scrollYBottom < panel1Img.offsetTop + panel1Img.offsetHeight
+              ) {
+                // 트랜지션 값 +
+                // (트랜지션 값 * 변화율 * (브라우저 하단 값 - 브라우저 상단에서 떨어진 거리) / 이미지의 높이값)
+                const translateX =
+                  80 - (80 * 1.3 * (scrollYBottom - panel1Img.offsetTop)) / panel1Img.offsetHeight
+
+                const translateY =
+                  -13 + (13 * 1.3 * (scrollYBottom - panel1Img.offsetTop)) / panel1Img.offsetHeight
+
+                const rotationDegree =
+                  23 - (23 * 1.6 * (scrollYBottom - panel1Img.offsetTop)) / panel1Img.offsetHeight
+
+                flyingSantaImg.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotationDegree}deg)`
+              }
+            })
+          }
+
+          window.addEventListener("scroll", animationMethods.imgScroll)
+        } else {
+          console.log("22")
+          window.removeEventListener("scroll", animationMethods.imgScroll)
+        }
+      }
+
+      const panel1Img = document.getElementById("panel-1-img")
+
+      useScrollAnimation({ element: panel1Img, callback: imgPopUpAnimation })
     </script>
   </body>
 </html>
