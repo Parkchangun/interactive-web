@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./reset.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <title>Clone Next Level Fairs</title>
+  </head>
+  <body>
+    <div class="cursor">
+      <div class="cursor-default">
+        <sapn class="cursor-default-inner"></sapn>
+      </div>
+      <div class="cursor-trace">
+        <span class="cursor-trace-inner"></span>
+      </div>
+    </div>
+
+    <script>
+      function updateCursorPosition(e) {
+        const cursorInner = document.querySelector(".cursor-default-inner")
+        const cursorTraceInner = document.querySelector(".cursor-trace-inner")
+
+        cursorInner.style.top = e.clientY + "px"
+        cursorInner.style.left = e.clientX + "px"
+
+        cursorTraceInner.style.top = e.clientY + "px"
+        cursorTraceInner.style.left = e.clientX + "px"
+      }
+
+      function onMouseMove(e) {
+        requestAnimationFrame(() => {
+          updateCursorPosition(e)
+        })
+      }
+
+      document.addEventListener("mousemove", onMouseMove)
+
+      const cursor = document.querySelector(".cursor")
+
+      document.addEventListener("mousedown", () => {
+        cursor.classList.add("cursor-active")
+      })
+
+      document.addEventListener("mouseup", () => {
+        cursor.classList.remove("cursor-active")
+      })
+    </script>
+  </body>
+</html>
