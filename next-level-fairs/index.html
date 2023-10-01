@@ -46,6 +46,24 @@
       document.addEventListener("mouseup", () => {
         cursor.classList.remove("cursor-active")
       })
+
+      function createRipple(e) {
+        const ripple = document.createElement("span")
+
+        ripple.classList.add("ripple")
+
+        cursor.appendChild(ripple)
+
+        // ripple이 그려진 후에 포지션 지정
+        ripple.style.top = e.clientY - ripple.clientHeight / 2 + "px"
+        ripple.style.left = e.clientX - ripple.clientWidth / 2 + "px"
+
+        ripple.addEventListener("animationend", () => {
+          cursor.removeChild(ripple)
+        })
+      }
+
+      document.addEventListener("click", createRipple)
     </script>
   </body>
 </html>
