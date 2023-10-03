@@ -17,6 +17,14 @@
       </div>
     </div>
 
+    <section class="preloader shown-area">
+      <button class="preloader-btn">
+        <span class="preloader-btn-hold">Hold</span>
+      </button>
+    </section>
+
+    <section class="header hidden-area">Header</section>
+
     <script>
       function updateCursorPosition(e) {
         const cursorInner = document.querySelector(".cursor-default-inner")
@@ -64,6 +72,52 @@
       }
 
       document.addEventListener("click", createRipple)
+
+      const preloaderBtn = document.querySelector(".preloader-btn")
+
+      let intervalId = null
+      let scale = 1
+
+      const threshold = 18
+
+      function setPreloaderStyle(scale) {
+        preloaderBtn.style.transform = `scale(${scale})`
+        document.querySelector(".preloader-btn-hold").style.opacity = 1 - (scale - 1) / threshold
+      }
+
+      preloaderBtn.addEventListener("mousedown", () => {
+        intervalId = setInterval(() => {
+          if (scale >= 1 + threshold) {
+            const header = document.querySelector(".header")
+            const preloader = document.querySelector(".preloader")
+
+            preloader.classList.remove("shown-area")
+            preloader.classList.add("hidden-area")
+
+            header.classList.remove("hidden-area")
+            header.classList.add("shown-area")
+
+            clearInterval(intervalId)
+          }
+
+          scale += 0.175
+
+          setPreloaderStyle(scale)
+        }, 10)
+      })
+
+      preloaderBtn.addEventListener("mouseup", () => {
+        clearInterval(intervalId)
+
+        intervalId = setInterval(() => {
+          if (scale <= 1) {
+            clearInterval(intervalId)
+          }
+          scale -= 0.075
+
+          setPreloaderStyle(scale)
+        }, 10)
+      })
     </script>
   </body>
 </html>
