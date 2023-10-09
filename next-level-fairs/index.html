@@ -23,7 +23,39 @@
       </button>
     </section>
 
-    <section class="header hidden-area">Header</section>
+    <section class="header hidden-area">
+      <span class="circle" id="circle-1"></span>
+      <span class="circle" id="circle-2"></span>
+      <img
+        id="cube-image-1"
+        src="./images/Lovepik_com-401467010-cube.png"
+        alt="큐브 이미지"
+        class="cube-image"
+      />
+      <img
+        id="cube-image-2"
+        src="./images/Lovepik_com-401467010-cube.png"
+        alt="큐브 이미지"
+        class="cube-image"
+      />
+      <img
+        id="cube-image-3"
+        src="./images/Lovepik_com-401467010-cube.png"
+        alt="큐브 이미지"
+        class="cube-image"
+      />
+      <img
+        id="cube-image-4"
+        src="./images/Lovepik_com-401467010-cube.png"
+        alt="큐브 이미지"
+        class="cube-image"
+      />
+
+      <h1 class="header-title">
+        <div>LAST ART</div>
+        <div>PROJECTS</div>
+      </h1>
+    </section>
 
     <script>
       function updateCursorPosition(e) {
@@ -74,6 +106,7 @@
       document.addEventListener("click", createRipple)
 
       const preloaderBtn = document.querySelector(".preloader-btn")
+      const header = document.querySelector(".header")
 
       let intervalId = null
       let scale = 1
@@ -88,7 +121,6 @@
       preloaderBtn.addEventListener("mousedown", () => {
         intervalId = setInterval(() => {
           if (scale >= 1 + threshold) {
-            const header = document.querySelector(".header")
             const preloader = document.querySelector(".preloader")
 
             preloader.classList.remove("shown-area")
@@ -117,6 +149,40 @@
 
           setPreloaderStyle(scale)
         }, 10)
+      })
+
+      header.addEventListener("mousemove", (e) => {
+        // 마우스의 상대적 위치를 나타냄
+        const xRelativeToHeader = e.clientX / header.clientWidth
+        const yRelativeToHeader = e.clientY / header.clientHeight
+
+        document.querySelector(".header-title").style.transform = `translate(${
+          xRelativeToHeader * -50
+        }px, ${yRelativeToHeader * -50}px)`
+
+        document.querySelector("#circle-1").style.transform = `translate(${
+          xRelativeToHeader * -25
+        }px, ${yRelativeToHeader * -25}px)`
+
+        document.querySelector("#circle-2").style.transform = `translate(${
+          xRelativeToHeader * 25
+        }px, ${yRelativeToHeader * 25}px)`
+
+        document.querySelector("#cube-image-1").style.transform = `translate(${
+          xRelativeToHeader * 20
+        }px, ${yRelativeToHeader * -15}px)`
+
+        document.querySelector("#cube-image-2").style.transform = `translate(${
+          xRelativeToHeader * 10
+        }px, ${yRelativeToHeader * -15}px)`
+
+        document.querySelector("#cube-image-3").style.transform = `translate(${
+          xRelativeToHeader * -3
+        }px, ${yRelativeToHeader * -3}px)`
+
+        document.querySelector("#cube-image-4").style.transform = `translate(${
+          xRelativeToHeader * 100
+        }px, ${yRelativeToHeader * 100}px)`
       })
     </script>
   </body>
