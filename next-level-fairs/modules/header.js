@@ -1,5 +1,6 @@
 const preloaderBtn = document.querySelector(".preloader-btn")
 const header = document.querySelector(".header")
+const poster = document.querySelector(".poster")
 
 let intervalId = null
 let scale = 1
@@ -30,6 +31,9 @@ preloaderBtn.addEventListener("mousedown", () => {
       header.classList.remove("hidden-area")
       header.classList.add("shown-area")
 
+      poster.classList.remove("hidden-area")
+      poster.classList.add("shown-area")
+
       clearInterval(intervalId)
 
       return
@@ -54,7 +58,7 @@ preloaderBtn.addEventListener("mouseup", () => {
 
       return
     }
-    
+
     scale -= 0.075
 
     setPreloaderStyle(scale)
@@ -96,3 +100,16 @@ header.addEventListener("mousemove", (e) => {
     xRelativeToHeader * 100
   }px, ${yRelativeToHeader * 100}px)`
 })
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible")
+      }
+    })
+  },
+  { threshold: 0.2 }
+)
+
+document.querySelectorAll(".poster-image-wrapper").forEach((poster) => observer.observe(poster))
