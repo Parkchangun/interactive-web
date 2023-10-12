@@ -113,3 +113,18 @@ const observer = new IntersectionObserver(
 )
 
 document.querySelectorAll(".poster-image-wrapper").forEach((poster) => observer.observe(poster))
+
+const posterParallax = document.querySelector(".poster-parallax")
+
+posterParallax.addEventListener("mousemove", (e) => {
+  const x = e.clientX / posterParallax.clientWidth
+  const y = e.clientY / posterParallax.clientHeight
+
+  document.querySelector("#poster-image-wrapper-2").style.transform = `translate(${x * -50}px, ${
+    y * -50
+  }px)`
+
+  document.querySelector("#poster-image-wrapper-3").style.transform = `translate(${x * 50}px, ${
+    y * 50
+  }px)`
+})
