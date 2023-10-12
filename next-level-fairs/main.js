@@ -1,2 +1,2 @@
 import "./modules/custom-cursor.js"
-import "./modules/header.js"
+import "./modules/events.js"
