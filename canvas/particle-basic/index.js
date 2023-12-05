@@ -29,4 +29,33 @@ ctx.scale(DPR, DPR)
 canvas.style.width = canvasWidth + "px"
 canvas.style.height = canvasHeight + "px"
 
-ctx.fillRect(10, 10, 50, 50)
+const RADIAN = Math.PI / 180
+class Particle {
+  constructor(x, y, radius) {
+    this.x = x
+    this.y = y
+    this.radius = radius
+  }
+
+  draw() {
+    // 패스 그린다 대기해
+    ctx.beginPath()
+    // radian을 사용하므로
+
+    ctx.arc(this.x, this.y, this.radius, 0, RADIAN * 360)
+    ctx.fillStyle = "red"
+    ctx.fill()
+    ctx.closePath()
+  }
+}
+
+const particle = new Particle(100, 100, 50)
+
+function animate() {
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+  particle.draw()
+
+  window.requestAnimationFrame(animate)
+}
+
+// animate()
