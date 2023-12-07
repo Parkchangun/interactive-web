@@ -36,6 +36,7 @@ class Particle {
     this.y = y
     this.radius = radius
     this.vy = vy
+    this.acc = 1.03 // 점차 증가되어야 하므로, 1 이상의 수를 곱하여야 함, 1이하를 곱하면 점점 느려짐(자동차 브레이크)
   }
 
   draw() {
@@ -50,7 +51,10 @@ class Particle {
   }
 
   update() {
+    // 둥둥이
     // this.y += Math.cos(Date.now() / 1000) * 5
+    // 떨어짐
+    this.vy *= this.acc
     this.y += this.vy
   }
 }
