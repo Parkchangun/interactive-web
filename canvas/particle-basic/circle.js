@@ -63,7 +63,7 @@ const randomNumberBetween = (min, max) => {
   return Math.random() * (max - min + 1) + min
 }
 
-const particles = new Array(50).fill(0).map(() => {
+const particles = new Array(20).fill(0).map(() => {
   const x = randomNumberBetween(0, canvasWidth)
   const y = randomNumberBetween(0, canvasHeight)
   const radius = randomNumberBetween(50, 100)
@@ -90,6 +90,7 @@ function animate() {
   particles.forEach((particle) => {
     particle.update()
     particle.draw()
+
     if (particle.y - particle.radius > canvasHeight) {
       particle.x = randomNumberBetween(0, canvasWidth)
       particle.y = -particle.radius
