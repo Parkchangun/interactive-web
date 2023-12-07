@@ -21,13 +21,13 @@ console.log(DPR)
 const canvasWidth = innerWidth
 const canvasHeight = innerHeight
 
+canvas.style.width = canvasWidth + "px"
+canvas.style.height = canvasHeight + "px"
+
 canvas.width = canvasWidth * DPR
 canvas.height = canvasHeight * DPR
 // DPR이 2 이상인 기기에선 좀 더 선명하게 보임
 ctx.scale(DPR, DPR)
-
-canvas.style.width = canvasWidth + "px"
-canvas.style.height = canvasHeight + "px"
 
 const RADIAN = Math.PI / 180
 class Particle {
@@ -103,3 +103,44 @@ function animate() {
 }
 
 animate()
+
+const feGaussianBlur = document.querySelector("feGaussianBlur")
+const feColorMatrix = document.querySelector("feColorMatrix")
+
+// dat gui
+const controls = new (function () {
+  this.blurValue = 40
+  this.alphaChannel = 100
+  this.alphaOffset = -23
+  this.acc = 1.03
+})()
+
+let gui = new dat.GUI()
+
+const f1 = gui.addFolder("Gooey Effect")
+const f2 = gui.addFolder("Particle")
+f1.open()
+
+f1.add(controls, "blurValue", 0, 100).onChange((value) => {
+  feGaussianBlur.setAttribute("stdDeviation", value)
+})
+
+f1.add(controls, "alphaChannel", 1, 200).onChange((value) => {
+  feColorMatrix.setAttribute(
+    "values",
+    `1 0 0 0 0  0 1 0 0 0   0 0 1 0 0  0 0 0 ${value} ${controls.alphaOffset}`
+  )
+})
+
+f1.add(controls, "alphaOffset", -40, 40).onChange((value) => {
+  feColorMatrix.setAttribute(
+    "values",
+    `1 0 0 0 0  0 1 0 0 0   0 0 1 0 0  0 0 0 ${controls.alphaChannel} ${value}`
+  )
+})
+
+f2.add(controls, "acc", 0, 1.5, 0.01).onChange((value) => {
+  particles.forEach((particle) => {
+    particle.acc = value
+  })
+})
