@@ -1,34 +1,18 @@
+let canvasWidth
+let canvasHeight
+let particles = []
 const canvas = document.querySelector("canvas")
-
-console.log(canvas)
-
 const ctx = canvas.getContext("2d")
-console.log(ctx)
-
+// 60fps
+const interval = 1000 / 60
+let now = 0,
+  delta = 0
+let then = Date.now()
 /**
  * devicePixelRatio(DPR) - 하나의 CSS를 픽셀을 그릴 때 사용되는 사용되는 장치의 픽셀 수
  * ../assets/dpr.png
  */
-
 const DPR = window.devicePixelRatio
-
-console.log(DPR)
-
-/**
- * style과 canvas 고유의 사이즈를 동일하게 해 작업을 하는 것이 일반적
- */
-
-const canvasWidth = innerWidth
-const canvasHeight = innerHeight
-
-canvas.style.width = canvasWidth + "px"
-canvas.style.height = canvasHeight + "px"
-
-canvas.width = canvasWidth * DPR
-canvas.height = canvasHeight * DPR
-// DPR이 2 이상인 기기에선 좀 더 선명하게 보임
-ctx.scale(DPR, DPR)
-
 const RADIAN = Math.PI / 180
 class Particle {
   constructor(x, y, radius, vy) {
@@ -63,19 +47,33 @@ const randomNumberBetween = (min, max) => {
   return Math.random() * (max - min + 1) + min
 }
 
-const particles = new Array(20).fill(0).map(() => {
-  const x = randomNumberBetween(0, canvasWidth)
-  const y = randomNumberBetween(0, canvasHeight)
-  const radius = randomNumberBetween(50, 100)
-  const vy = randomNumberBetween(1, 5)
+function init() {
+  /**
+   * style과 canvas 고유의 사이즈를 동일하게 해 작업을 하는 것이 일반적
+   */
+  canvasWidth = innerWidth
+  canvasHeight = innerHeight
 
-  return new Particle(x, y, radius, vy)
-})
+  canvas.style.width = canvasWidth + "px"
+  canvas.style.height = canvasHeight + "px"
 
-// 60fps
-let interval = 1000 / 60
-let now, delta
-let then = Date.now()
+  canvas.width = canvasWidth * DPR
+  canvas.height = canvasHeight * DPR
+
+  // DPR이 2 이상인 기기에선 좀 더 선명하게 보임
+  ctx.scale(DPR, DPR)
+
+  const total = Math.floor(canvasWidth / 15)
+
+  particles = new Array(total).fill(0).map(() => {
+    const x = randomNumberBetween(0, canvasWidth)
+    const y = randomNumberBetween(0, canvasHeight)
+    const radius = randomNumberBetween(50, 100)
+    const vy = randomNumberBetween(1, 5)
+
+    return new Particle(x, y, radius, vy)
+  })
+}
 
 function animate() {
   window.requestAnimationFrame(animate)
@@ -102,7 +100,14 @@ function animate() {
   then = now - (delta & interval)
 }
 
-animate()
+window.addEventListener("load", () => {
+  init()
+  animate()
+})
+
+window.addEventListener("resize", () => {
+  init()
+})
 
 const feGaussianBlur = document.querySelector("feGaussianBlur")
 const feColorMatrix = document.querySelector("feColorMatrix")
